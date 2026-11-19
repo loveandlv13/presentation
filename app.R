@@ -1,21 +1,34 @@
 # this is my comment
+# this app will demonstrate the normal distribution and visualize zscores
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+# UI for app that draws a histogram from a random sample
 ui <- fluidPage(
 
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    # application title
+    titlePanel("Presenation demonstration"),
 
-    # Sidebar with a slider input for number of bins 
+    # input for sample size, mean, and SD
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
+            sliderInput("size",
+                        "Sample size (n)",
+                        min = 10,
+                        max = 1000,
+                        value = 500),
+            
+            sliderInput("mean",
+                        "Mean (μ)",
+                        min = 1,
+                        max = 500,
+                        value = 25),
+            
+            sliderInput("sd",
+                        "Standard dev (σ)",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 5),
         ),
 
         # Show a plot of the generated distribution
@@ -25,20 +38,24 @@ ui <- fluidPage(
     )
 )
 
-# Define server logic required to draw a histogram
+# the back end is where the magic happens!
+
 server <- function(input, output) {
-
+  
+    # reactive to generate sample data
+  
+    sampleData <- reactive(
+      rnorm(n = input$size, mean = input$mean, sd = input$sd)
+      )
+    
+    # generate histogram
     output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white',
-             xlab = 'Waiting time to next eruption (in mins)',
-             main = 'Histogram of waiting times')
+        hist(sampleData(), col = 'pink', border = 'white',
+             xlab = 'n',
+             main = 'Histogram of sample'
+             )
     })
 }
 
-# Run the application 
+# run application
 shinyApp(ui = ui, server = server)
