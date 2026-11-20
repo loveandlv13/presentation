@@ -39,27 +39,28 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-  # truncate the vector to sample size so that graph displays one
-  # consistent data set
+  # truncate the vector to inputted sample size so graphs displays one
+  # consistent data set until mean / sd are changed
   
     # reactive to generate sample data
   
     sampleData <- reactive(
-      rnorm(n = input$size, mean = input$mean, sd = input$sd)
+      rnorm(n = 10000, mean = input$mean, sd = input$sd)
       )
     
     # generate freq histogram 
     output$distPlot <- renderPlot({
       
-      hist(sampleData(), col = 'pink', border = 'white',
-             xlab = 'n',
-             main = 'Histogram of sample (frequency)'
+      hist(sampleData()[1:input$size], col = 'pink', border = 'white',
+           xlab = 'n',
+           main = 'Histogram of sample (frequency)'
              )
     }, res = 96)
     
+    # generate density histogram
     output$densPlot <- renderPlot({
       
-        hist(sampleData(), col = 'gold', border = 'white',
+        hist(sampleData()[1:input$size], col = 'gold', border = 'white',
              freq = FALSE,
              xlab = 'n',
              main = 'Histogram of sample (density)'
