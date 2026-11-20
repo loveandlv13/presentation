@@ -25,7 +25,7 @@ ui <- fluidPage(
     
     sliderInput("sd",
                 "Standard dev (σ)",
-                min = 1,
+                min = 0,
                 max = 50,
                 value = 5,
                 step = 5),
@@ -56,7 +56,8 @@ server <- function(input, output) {
       
       hist(sampleData()[1:input$size], col = 'pink', border = 'white',
            xlab = 'n',
-           main = 'Histogram of sample (frequency)'
+           main = 'Histogram of sample (frequency)',
+           breaks = "Scott"
              )
     }, res = 96)
     
@@ -66,7 +67,8 @@ server <- function(input, output) {
         hist(sampleData()[1:input$size], col = 'gold', border = 'white',
              freq = FALSE,
              xlab = 'n',
-             main = 'Histogram of sample (density)'
+             main = 'Histogram of sample (density)',
+             breaks = "Scott"
         )
       
       curve(dnorm(x, mean=input$mean, sd=input$sd), 
