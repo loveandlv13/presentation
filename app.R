@@ -13,19 +13,22 @@ ui <- fluidPage(
                 "Sample size (n)",
                 min = 100,
                 max = 10000,
-                value = 500),
+                value = 500,
+                step = 100),
     
     sliderInput("mean",
                 "Mean (μ)",
                 min = 100,
                 max = 500,
-                value = 200),
+                value = 200,
+                step = 25),
     
     sliderInput("sd",
                 "Standard dev (σ)",
                 min = 1,
                 max = 50,
-                value = 5),
+                value = 5,
+                step = 5),
 
     # Show a plot of the generated distribution
     fluidRow(
